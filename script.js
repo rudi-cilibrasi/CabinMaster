@@ -32,6 +32,11 @@ var stateTree = {
             [hitBoxTutorialFullScreen, doHitBoxTutorial_02]
         ],
     },
+    "tutorial_03": {
+        "hitboxes": [
+            [hitBoxTutorialFullScreen, doHitBoxTutorial_03]
+        ],
+    },
 }
 
 function checkHitBox(hitBox) {
@@ -81,6 +86,10 @@ function doHitBoxTutorial_01() {
 
 function doHitBoxTutorial_02() {
     moveToState("tutorial_03");
+}
+
+function doHitBoxTutorial_03() {
+    moveToState("tutorial_04");
 }
 
 function processMouseDown() {
