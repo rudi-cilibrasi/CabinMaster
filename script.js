@@ -4,6 +4,22 @@ var mouseX, mouseY;
 
 var hitBoxMainMenuNew = [6, 130, 211, 192];
 var hitBoxBackArrowWelcome = [41, 31, 123, 87];
+var hitBoxStartTutorial = [278, 431, 518, 521];
+var currentPlace = "main_menu";
+
+var stateTree = {
+    "main_menu": {
+        "hitboxes": [
+            [hitBoxMainMenuNew, doHitBoxMainMenuNew]
+        ],
+    },
+    "new_click_welcome": {
+        "hitboxes": [
+            [hitBoxBackArrowWelcome, doHitBoxBackArrowWelcome],
+            [hitBoxStartTutorial, doHitBoxStartTutorial]
+        ],
+    },
+}
 
 function checkHitBox(hitBox) {
     var x = mouseX - mainView.offsetLeft;
@@ -20,16 +36,34 @@ function bootup() {
     console.log("booted");
 }
 
+function moveToState(state) {
+    currentPlace = state;
+    switchMainViewImage(state + ".png");
+}
+
 function switchMainViewImage(imageFilename) {
     mainView.src = "images/" + imageFilename;
 }
 
+function doHitBoxMainMenuNew() {
+    moveToState("new_click_welcome");
+}
+
+function doHitBoxBackArrowWelcome() {
+    moveToState("main_menu");
+}
+
+function doHitBoxStartTutorial() {
+    moveToState("tutorial_01");
+}
+
 function processMouseDown() {
-    if (checkHitBox(hitBoxMainMenuNew)) {
-        switchMainViewImage("new_click_welcome.png");
-    }
-    if (checkHitBox(hitBoxBackArrowWelcome)) {
-        switchMainViewImage("main_menu.png");
+    var currentHitBoxes = stateTree[currentPlace]["hitboxes"];
+    for (var i = 0; i < currentHitBoxes.length; i++) {
+        if (checkHitBox(currentHitBoxes[i][0])) {
+            currentHitBoxes[i][1]();
+            return;
+        }
     }
 }
 
